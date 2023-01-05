@@ -55,33 +55,12 @@ namespace TestNinja.UnitTests.Mocking
         }
 
         [Test]
-        public void SendStatementEmails_HouseKeepersEmailIsNull_ShouldNotGenerateStatement()
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase(" ")]
+        public void SendStatementEmails_HouseKeepersEmailIsNull_ShouldNotGenerateStatement(string email)
         {
-            _houseKeeper.Email = null;
-            
-            _service.SendStatementEmails(_statementDate);
-            
-            _statementGenerator.Verify(sg => 
-                sg.SaveStatement(_houseKeeper.Oid, _houseKeeper.FullName, (_statementDate)),
-                Times.Never);
-        }
-
-        [Test]
-        public void SendStatementEmails_HouseKeepersEmailIsWhitespace_ShouldNotGenerateStatement()
-        {
-            _houseKeeper.Email = " ";
-            
-            _service.SendStatementEmails(_statementDate);
-            
-            _statementGenerator.Verify(sg => 
-                sg.SaveStatement(_houseKeeper.Oid, _houseKeeper.FullName, (_statementDate)),
-                Times.Never);
-        }
-
-        [Test]
-        public void SendStatementEmails_HouseKeepersEmailIsEmpty_ShouldNotGenerateStatement()
-        {
-            _houseKeeper.Email = "";
+            _houseKeeper.Email = email;
             
             _service.SendStatementEmails(_statementDate);
             
@@ -99,29 +78,12 @@ namespace TestNinja.UnitTests.Mocking
         }
 
         [Test]
-        public void SendStatementEmails_StatementFileNameIsNull_ShouldNotEmailTheStatement()
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase(" ")]
+        public void SendStatementEmails_StatementFileNameIsNull_ShouldNotEmailTheStatement(string fileName)
         {
-            _statementFileName = null;
-            
-            _service.SendStatementEmails(_statementDate);
-            
-            VerifyEmailNotSent();
-        }
-
-        [Test]
-        public void SendStatementEmails_StatementFileNameIsEmptyString_ShouldNotEmailTheStatement()
-        {
-            _statementFileName = "";
-            
-            _service.SendStatementEmails(_statementDate);
-            
-            VerifyEmailNotSent();
-        }
-
-        [Test]
-        public void SendStatementEmails_StatementFileNameIsWhitespace_ShouldNotEmailTheStatement()
-        {
-            _statementFileName = " ";
+            _statementFileName = fileName;
             
             _service.SendStatementEmails(_statementDate);
             
